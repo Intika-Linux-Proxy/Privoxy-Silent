@@ -1,0 +1,15 @@
+Index: privoxy-3.0.28-stable/project.h
+===================================================================
+--- privoxy-3.0.28-stable/project.h
++++ privoxy-3.0.28-stable/project.h
+@@ -1479,8 +1479,8 @@
+  * 2) CGI_SITE_2_PATH must not end with /, one will be added automatically.
+  * 3) CGI_SITE_2_PATH must start with /, unless it is the empty string.
+  */
+-#define CGI_SITE_1_HOST "p.p"
+-#define CGI_SITE_2_HOST "config.privoxy.org"
++#define CGI_SITE_1_HOST "mageia.proxy"
++#define CGI_SITE_2_HOST "mageia.config"
+ #define CGI_SITE_2_PATH ""
+ 
+ /**

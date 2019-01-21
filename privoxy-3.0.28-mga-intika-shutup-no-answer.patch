@@ -1,0 +1,50 @@
+Index: privoxy-3.0.28-stable/jcc.c
+===================================================================
+--- privoxy-3.0.28-stable/jcc.c
++++ privoxy-3.0.28-stable/jcc.c
+@@ -2156,7 +2156,7 @@
+             csp->config->socket_timeout, http->url);
+          if ((byte_count == 0) && (http->ssl == 0))
+          {
+-            send_crunch_response(csp, error_response(csp, "connection-timeout"));
++            //send_crunch_response(csp, error_response(csp, "connection-timeout"));
+          }
+          mark_server_socket_tainted(csp);
+          return;
+@@ -2632,7 +2632,7 @@
+                   log_error(LOG_LEVEL_ERROR,
+                      "No server or forwarder response received on socket %d.",
+                      csp->server_connection.sfd);
+-                  send_crunch_response(csp, error_response(csp, "no-server-data"));
++                  //send_crunch_response(csp, error_response(csp, "no-server-data"));
+                }
+                free_http_request(http);
+                mark_server_socket_tainted(csp);
+@@ -2971,15 +2971,15 @@
+          if (fwd->type != SOCKS_NONE)
+          {
+             /* Socks error. */
+-            rsp = error_response(csp, "forwarding-failed");
++            //rsp = error_response(csp, "forwarding-failed");
+          }
+          else if (errno == EINVAL)
+          {
+-            rsp = error_response(csp, "no-such-domain");
++            //rsp = error_response(csp, "no-such-domain");
+          }
+          else
+          {
+-            rsp = error_response(csp, "connect-failed");
++            //rsp = error_response(csp, "connect-failed");
+          }
+ 
+          /* Write the answer to the client */
+@@ -3024,7 +3024,7 @@
+    {
+       if (send_http_request(csp))
+       {
+-         rsp = error_response(csp, "connect-failed");
++         //rsp = error_response(csp, "connect-failed");
+          if (rsp)
+          {
+             send_crunch_response(csp, rsp);

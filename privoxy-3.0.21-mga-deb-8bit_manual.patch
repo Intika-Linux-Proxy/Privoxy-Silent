@@ -1,0 +1,30 @@
+Index: privoxy-3.0.28-stable/doc/source/ldp.dsl.in
+===================================================================
+--- privoxy-3.0.28-stable/doc/source/ldp.dsl.in
++++ privoxy-3.0.28-stable/doc/source/ldp.dsl.in	2018-12-31 10:42:31.766286173 +0100
+@@ -48,9 +48,9 @@
+ 
+ ;; this is the 'print' portion of the stylesheet so we want to
+ ;; convert ampersand-code strings to character values
+-(declare-characteristic preserve-sdata?
+-  "UNREGISTERED::James Clark//Characteristic::preserve-sdata?"
+-  #f)
++;(declare-characteristic preserve-sdata?
++;  "UNREGISTERED::James Clark//Characteristic::preserve-sdata?"
++;  #f)
+ 
+ ;; put the legal notice in a separate file
+ (define %generate-legalnotice-link%
+@@ -274,9 +274,9 @@
+ 
+ ;; this is the 'html' portion of the stylesheet so we want to keep the
+ ;; ampersand-code strings and let the browser convert them to characters
+-(declare-characteristic preserve-sdata?
+-  "UNREGISTERED::James Clark//Characteristic::preserve-sdata?"
+-  #t)
++;(declare-characteristic preserve-sdata?
++;  "UNREGISTERED::James Clark//Characteristic::preserve-sdata?"
++;  #t)
+ 
+ ;; put the legal notice in a separate file
+ (define %generate-legalnotice-link%

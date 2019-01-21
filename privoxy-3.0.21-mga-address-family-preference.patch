@@ -1,0 +1,147 @@
+Index: privoxy-3.0.28-stable/jbsockets.c
+===================================================================
+--- privoxy-3.0.28-stable/jbsockets.c
++++ privoxy-3.0.28-stable/jbsockets.c	2018-12-31 10:35:53.764954122 +0100
+@@ -244,7 +244,17 @@
+    }
+ 
+    memset((char *)&hints, 0, sizeof(hints));
+-   hints.ai_family = AF_UNSPEC;
++   switch(csp->config->address_family_preference)
++   {
++      case ADDRESS_FAMILY_PREFERENCE_IPV4:
++         hints.ai_family = AF_INET;
++         break;
++      case ADDRESS_FAMILY_PREFERENCE_IPV6:
++         hints.ai_family = AF_INET6;
++         break;
++      default:
++         hints.ai_family = AF_UNSPEC;
++   }
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_NUMERICSERV; /* avoid service look-up */
+ #ifdef AI_ADDRCONFIG
+Index: privoxy-3.0.28-stable/loadcfg.c
+===================================================================
+--- privoxy-3.0.28-stable/loadcfg.c
++++ privoxy-3.0.28-stable/loadcfg.c	2018-12-31 10:37:50.725345572 +0100
+@@ -133,6 +133,7 @@
+ #define hash_actions_file                1196306641U /* "actionsfile" */
+ #define hash_accept_intercepted_requests 1513024973U /* "accept-intercepted-requests" */
+ #define hash_admin_address               4112573064U /* "admin-address" */
++#define hash_address_family_preference   3725998957U /* "address-family-preference */
+ #define hash_allow_cgi_request_crunching  258915987U /* "allow-cgi-request-crunching" */
+ #define hash_buffer_limit                1881726070U /* "buffer-limit */
+ #define hash_client_header_order         2701453514U /* "client-header-order" */
+@@ -1109,6 +1110,31 @@
+             config->re_filterfile[i] = make_path(config->confdir, arg);
+ 
+             break;
++/* *************************************************************************
++ * address-family-preference ipv4|IPv4|ipv6|IPv6|none
++ * *************************************************************************/
++         case hash_address_family_preference:
++            if (!strcmp(arg, "ipv4") || !strcmp(arg, "IPv4"))
++            {
++               config->address_family_preference = ADDRESS_FAMILY_PREFERENCE_IPV4;
++            }
++            else if (!strcmp(arg, "ipv6") || !strcmp(arg, "IPv6"))
++            {
++               config->address_family_preference = ADDRESS_FAMILY_PREFERENCE_IPV6;
++            }
++            else if (!strcmp(arg, "none"))
++            {
++               config->address_family_preference = ADDRESS_FAMILY_PREFERENCE_NONE;
++            }
++            else
++            {
++               log_error(LOG_LEVEL_FATAL,
++                  "Directive %s used with invalid argument '%s'. Use 'ipv6', 'ipv4', or 'none'.",
++                  cmd, arg);
++            }
++            break;
++
++
+ 
+ /* *************************************************************************
+  * forward url-pattern (.|http-proxy-host[:port])
+Index: privoxy-3.0.28-stable/project.h
+===================================================================
+--- privoxy-3.0.28-stable/project.h
++++ privoxy-3.0.28-stable/project.h	2018-12-31 10:39:59.485776513 +0100
+@@ -894,6 +894,16 @@
+  */
+ #define MAX_LISTENING_SOCKETS 10
+ 
++enum address_family_preference
++{
++   /** No preference, let the OS decide. */
++   ADDRESS_FAMILY_PREFERENCE_NONE = 0,
++   /** Ask the OS for IPv4 addresses only. */
++   ADDRESS_FAMILY_PREFERENCE_IPV4,
++   /** Ask the OS for IPv6 addresses only. */
++   ADDRESS_FAMILY_PREFERENCE_IPV6
++};
++
+ /**
+  * The state of a Privoxy processing thread.
+  */
+@@ -1409,6 +1419,9 @@
+    unsigned int default_server_timeout;
+ #endif
+ 
++   /** Preference for the address family for outgoing connections. */
++   enum address_family_preference address_family_preference;
++
+ #ifdef FEATURE_COMPRESSION
+    int compression_level;
+ #endif
+Index: privoxy-3.0.28-stable/doc/source/p-config.sgml
+===================================================================
+--- privoxy-3.0.28-stable/doc/source/p-config.sgml
++++ privoxy-3.0.28-stable/doc/source/p-config.sgml	2018-12-31 10:34:31.224688071 +0100
+@@ -3810,6 +3810,44 @@
+ </variablelist>
+ </sect3>
+ 
++<sect3 renderas="sect4" id="address-family-preference"><title>address-family-preference</title>
++<variablelist>
++ <varlistentry>
++  <term>Specifies:</term>
++  <listitem>
++   <para>
++    Whether a specific address family (IPv4 or IPv6) is preferred for outgoing connections.
++   </para>
++  </listitem>
++ </varlistentry>
++ <varlistentry>
++  <term>Type of value:</term>
++  <listitem>
++   <para>
++    <replaceable>none or ipv4 or ipv6</replaceable>
++   </para>
++  </listitem>
++ </varlistentry>
++ <varlistentry>
++  <term>Default value:</term>
++  <listitem>
++   <para>none</para>
++  </listitem>
++ </varlistentry>
++ <varlistentry>
++  <term>Notes:</term>
++  <listitem>
++   <para>
++     By default &my-app; performs generic DNS lookups, often preferring IPv6 in practice.
++     When this option is set to something other than none, addresses from the specified
++     family are requested from the OS.
++   </para>
++  </listitem>
++ </varlistentry>
++</variablelist>
++<![%config-file;[<literallayout>@@#address-family-preference  none</literallayout>]]>
++</sect3>
++
+ <!--  ~  End section  ~  -->
+ 
+ </sect2>

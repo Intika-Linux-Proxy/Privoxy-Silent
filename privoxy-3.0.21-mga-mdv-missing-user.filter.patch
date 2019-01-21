@@ -1,0 +1,12 @@
+diff -up privoxy-3.0.21-stable/doc/source/p-config.sgml.missing-user-filter privoxy-3.0.21-stable/doc/source/p-config.sgml
+--- privoxy-3.0.21-stable/doc/source/p-config.sgml.missing-user-filter	2014-10-25 22:36:50.100925122 +0200
++++ privoxy-3.0.21-stable/doc/source/p-config.sgml	2014-10-25 22:40:11.998097826 +0200
+@@ -799,7 +799,7 @@ actionsfile
+ </variablelist>
+ 
+ <![%config-file;[<literallayout>@@filterfile default.filter</literallayout>]]>
+-<![%config-file;[<literallayout>@@filterfile user.filter      # User customizations</literallayout>]]>
++<![%config-file;[<literallayout>@@#filterfile user.filter      # User customizations</literallayout>]]>
+ </sect3>
+ 
+ 
