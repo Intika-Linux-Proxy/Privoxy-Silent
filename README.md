@@ -1,4 +1,4 @@
-# Privoxy-Anonyme
+# Privoxy-Anonyme v3.0.28
 Patched Privoxy Version To Make It Less Detectable And More Silent 
 
 Built with 
