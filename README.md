@@ -1,6 +1,5 @@
 # Privoxy-Anonyme v3.0.28
-Patched Privoxy Version To Make It Less Detectable And More Silent 
-This is a quick patch to match some needs nothing elaborated.
+A Privoxy patched version to make it less detectable and more silent; This is a quick patch to match some needs nothing elaborated.
 
 Built with 
 ```
